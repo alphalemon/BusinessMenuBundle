@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="businessmenu_editor_settings" type="collection">
+            <parameter key="rich_editor">true</parameter>
+        </parameter>
+        
+        <parameter key="businessmenu_required_stylesheets" type="collection">
+            <parameter>@BusinessMenuBundle/Resources/public/css/business-menu.css</parameter>
+        </parameter>
+        
+        <parameter key="businessmenu_required_javascripts" type="collection">
+            <parameter>@BusinessMenuBundle/Resources/public/js/cufon-yui.js</parameter>
+            <parameter>@BusinessMenuBundle/Resources/public/js/al-cufon-replace.js</parameter>
+            <parameter>@BusinessMenuBundle/Resources/public/js/Swis721_Cn_BT_400.font.js</parameter>
+            <parameter>@BusinessMenuBundle/Resources/public/js/Swis721_Cn_BT_700.font.js</parameter>
+        </parameter>
+    </parameters>
+</container>

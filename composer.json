@@ -1,0 +1,21 @@
+{
+  "name": "alphalemon/app-business-menu-bundle",
+  "description": "An AlphaLemon CMS app that adds a cool navigation menu content type and the related editor to manage it",
+  "keywords": ["alphalemon", "cms", "app"],
+  "homepage": "http://alphalemon.com",
+  "type": "symfony-bundle",
+  "license": "GPL 2.0",
+  "authors": [
+    {
+      "name": "AlphaLemon",
+      "email": "info@alphalemon.com"
+    }
+  ],
+  "require": {
+    "symfony/symfony":  ">=2.0.10,<dev-master"
+  },
+  "autoload": {
+    "psr-0": { "AlphaLemon\\Block": ""
+    }
+  }
+}

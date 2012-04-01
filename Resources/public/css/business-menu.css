@@ -1,0 +1,17 @@
+.business-menu {float:right;padding-top:15px}
+.business-menu li {float:left;padding-left:51px}
+.business-menu li a{display:block;font:20px "Trebuchet MS", Arial, Helvetica, sans-serif;line-height:1.2em;color:#bbb;text-transform:uppercase;text-decoration:none;text-align:center;letter-spacing:-1px;height:79px;font-style:normal;font-weight:700}
+.business-menu li a span{font-size:13px;line-height:1.2em;color:#666666;display:block;letter-spacing:-1px;margin-top:-3px;font-weight:normal}
+.business-menu li a:hover, .business-menu .active a{color:#497e04}
+.business-menu li a:hover span, .business-menu .active a span{color:#fff}
+.business-menu #nav1 a{background:url(../images/menu_icon1.gif) bottom center no-repeat}
+.business-menu #nav1 a:hover, .business-menu #nav1.active a{background:url(../images/menu_icon1_active.gif) bottom center no-repeat}
+.business-menu #nav2 a{background:url(../images/menu_icon2.gif) bottom center no-repeat}
+.business-menu #nav2 a:hover, .business-menu #nav2.active a{background:url(../images/menu_icon2_active.gif) bottom center no-repeat}
+.business-menu #nav3 a{background:url(../images/menu_icon3.gif) bottom center no-repeat}
+.business-menu #nav3 a:hover, .business-menu #nav3.active a{background:url(../images/menu_icon3_active.gif) bottom center no-repeat}
+.business-menu #nav4 a{background:url(../images/menu_icon4.gif) bottom center no-repeat}
+.business-menu #nav4 a:hover, .business-menu #nav4.active a{background:url(../images/menu_icon4_active.gif) bottom center no-repeat}
+.business-menu #nav5 a{background:url(../images/menu_icon5.gif) bottom center no-repeat}
+.business-menu #nav5 a:hover, .business-menu #nav5.active a{background:url(../images/menu_icon5_active.gif) bottom center no-repeat}
+
