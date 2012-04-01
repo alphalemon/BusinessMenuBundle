@@ -12,7 +12,8 @@
     }
   ],
   "autoload": {
-    "psr-0": { "AlphaLemon\\Block": ""
+    "psr-0": { "AlphaLemon\\Block\\BusinessMenuBundle": ""
     }
-  }
+  },
+  "target-dir" : "BusinessMenuBundle"
 }
