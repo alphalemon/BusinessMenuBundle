@@ -11,9 +11,6 @@
       "email": "info@alphalemon.com"
     }
   ],
-  "require": {
-    "symfony/symfony":  ">=2.0.10,<dev-master"
-  },
   "autoload": {
     "psr-0": { "AlphaLemon\\Block": ""
     }
