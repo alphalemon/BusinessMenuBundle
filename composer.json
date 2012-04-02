@@ -15,5 +15,5 @@
     "psr-0": { "AlphaLemon\\Block\\BusinessMenuBundle": ""
     }
   },
-  "target-dir" : "BusinessMenuBundle"
+  "target-dir" : "AlphaLemon/Block/BusinessMenuBundle"
 }
