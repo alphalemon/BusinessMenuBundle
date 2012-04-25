@@ -1,7 +1,7 @@
 {
     "bundles" : {
-        "AlphaLemon\\Block\\BusinessDropCapBundle\\BusinessDropCapBundle" : {
-            "environments" : ["alcms", "alcms_dev", "test"]
+        "AlphaLemon\\Block\\BusinessMenuBundle\\BusinessMenuBundle" : {
+            "environments" : ["all"]
         }
     }
 }
