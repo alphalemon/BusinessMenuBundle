@@ -36,7 +36,8 @@ class AlBlockManagerBusinessMenu extends AlBlockManager
                             <li><a href="#">[Products, The best]</a></li>
                             <li><a href="#">[Contacts, Our Address]</a></li>
                             </ul>';
-        return array('HtmlContent' => $defaultContent);
+        return array('HtmlContent' => $defaultContent,
+            'InternalJavascript' => '$(".business-menu a").doCufon();');
     }
     
     public function getHtmlContent()
