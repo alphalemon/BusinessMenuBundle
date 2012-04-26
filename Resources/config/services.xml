@@ -8,11 +8,11 @@
             <parameter key="rich_editor">true</parameter>
         </parameter>
         
-        <parameter key="businessmenu_required_stylesheets" type="collection">
+        <parameter key="businessmenu.stylesheets" type="collection">
             <parameter>@BusinessMenuBundle/Resources/public/css/business-menu.css</parameter>
         </parameter>
         
-        <parameter key="businessmenu_required_javascripts" type="collection">
+        <parameter key="businessmenu.javascripts" type="collection">
             <parameter>@BusinessMenuBundle/Resources/public/js/cufon-yui.js</parameter>
             <parameter>@BusinessMenuBundle/Resources/public/js/al-cufon-replace.js</parameter>
             <parameter>@BusinessMenuBundle/Resources/public/js/Swis721_Cn_BT_400.font.js</parameter>
