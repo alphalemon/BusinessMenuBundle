@@ -4,6 +4,8 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="app_businessmenu.block.class">AlphaLemon\Block\BusinessMenuBundle\Core\Block\AlBlockManagerBusinessMenu</parameter>
+
         <parameter key="businessmenu_editor_settings" type="collection">
             <parameter key="rich_editor">true</parameter>
         </parameter>
@@ -19,4 +21,11 @@
             <parameter>@BusinessMenuBundle/Resources/public/js/Swis721_Cn_BT_700.font.js</parameter>
         </parameter>
     </parameters>
+
+    <services>
+        <service id="app_businessmenu.block" class="%app_businessmenu.block.class%">
+            <argument type="service" id="service_container" />
+            <tag name="alphalemon_cms.blocks_factory.block" description="Business menu"  type="BusinessMenu" group="business_theme_apps" />
+        </service>
+    </services>
 </container>

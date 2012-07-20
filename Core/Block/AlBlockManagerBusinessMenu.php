@@ -10,15 +10,16 @@
  * file that was distributed with this source code.
  *
  * For extra documentation and help please visit http://www.alphalemon.com
- * 
+ *
  * @license    GPL LICENSE Version 2.0
- * 
+ *
  */
 
 namespace AlphaLemon\Block\BusinessMenuBundle\Core\Block;
 
 use AlphaLemon\AlphaLemonCmsBundle\Core\Content\Block\AlBlockManager;
 use AlphaLemon\AlphaLemonCmsBundle\Model\AlPageAttributePeer;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * AlBlockManagerBusinessMenu
@@ -27,6 +28,18 @@ use AlphaLemon\AlphaLemonCmsBundle\Model\AlPageAttributePeer;
  */
 class AlBlockManagerBusinessMenu extends AlBlockManager
 {
+    private $container;
+
+    public function __construct(ContainerInterface $container, AlParametersValidatorInterface $validator = null)
+    {
+        $this->container = $container;
+        $dispatcher = $container->get('event_dispatcher');
+        $factoryRepository = $container->get('alphalemon_cms.factory_repository');
+        parent::__construct($dispatcher, $factoryRepository, $validator);
+
+        $this->languageRepository = $this->factoryRepository->createRepository('Language');
+    }
+
     public function getDefaultValue()
     {
         $defaultContent = '<ul class="business-menu">
@@ -39,29 +52,26 @@ class AlBlockManagerBusinessMenu extends AlBlockManager
         return array('HtmlContent' => $defaultContent,
             'InternalJavascript' => '$(".business-menu a").doCufon();');
     }
-    
-    public function getHtmlContent()
+
+    public function getHtmlContentForDeploy()
     {
         $content = $this->alBlock->getHtmlContent();
-        
+
         // Finds the menu attributes
-        preg_match_all('/<a[^>]*?href=["|\'](.*?)["|\']*?\>\[(.*)?, (.[^\]]*)?\]*/', $content, $matches); 
+        preg_match_all('/<a[^>]*?href=["|\'](.*?)["|\']*?\>\[(.*)?, (.[^\]]*)?\]*/', $content, $matches);
         if(isset($matches[3]) && !empty($matches[3]))
         {
             // Assigns the attributes
             $links = $matches[1];
             $menuValues = array_combine($matches[2], $matches[3]);
 
-            // Finds the active page
-            $c = new \Criteria();
-            $c->add(AlPageAttributePeer::TO_DELETE, 0);
-            $c->add(AlPageAttributePeer::LANGUAGE_ID, $this->container->get('al_page_tree')->getAlLanguage()->getId());
-            $pageAttributes = $this->container->get('al_page_tree')->getAlPage()->getAlPageAttributes($c);
-            $permalink = $pageAttributes[0]->getPermalink();
-            
+            $seoRepository = $this->factoryRepository->createRepository('Seo');
+            $seo = $seoRepository->fromPageAndLanguage($this->container->get('al_page_tree')->getAlLanguage()->getId(), $this->container->get('al_page_tree')->getAlPage()->getId());
+            $permalink = $seo->getPermalink();
+
             // Builds the menu items
             $i = 1;
-            $menuItems = array();  
+            $menuItems = array();
             foreach($menuValues as $title => $subtitle)
             {
                 $link = array_shift($links);
@@ -73,12 +83,12 @@ class AlBlockManagerBusinessMenu extends AlBlockManager
             // Returns the menu
             return sprintf('<ul class="business-menu">%s</ul>', implode("\n", $menuItems));
         }
-        
+
         return $content;
     }
-    
-    public function getHtmlContentCMSMode()
+
+    public function getHtmlContent()
     {
-        return $this->getHtmlContent() . '<script type="text/javascript">$(document).ready(function(){ $(\'.business-menu a\').doCufon(); });</script>';
+        return $this->getHtmlContentForDeploy() . '<script type="text/javascript">$(document).ready(function(){ $(\'.business-menu a\').doCufon(); });</script>';
     }
 }
