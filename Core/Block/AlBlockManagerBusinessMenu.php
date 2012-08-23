@@ -20,13 +20,14 @@ namespace AlphaLemon\Block\BusinessMenuBundle\Core\Block;
 use AlphaLemon\AlphaLemonCmsBundle\Core\Content\Block\AlBlockManager;
 use AlphaLemon\AlphaLemonCmsBundle\Model\AlPageAttributePeer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use AlphaLemon\AlphaLemonCmsBundle\Core\Content\Block\JsonBlock\AlBlockManagerJsonBlock;
 
 /**
  * AlBlockManagerBusinessMenu
  *
  * @author alphalemon
  */
-class AlBlockManagerBusinessMenu extends AlBlockManager
+class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock 
 {
     private $container;
 
@@ -42,49 +43,72 @@ class AlBlockManagerBusinessMenu extends AlBlockManager
 
     public function getDefaultValue()
     {
-        $defaultContent = '<ul class="business-menu">
-                            <li><a href="#">[Home, Welcome!]</a></li>
-                            <li><a href="#">[News, Fresh]</a></li>
-                            <li><a href="#">[Services, for you]</a></li>
-                            <li><a href="#">[Products, The best]</a></li>
-                            <li><a href="#">[Contacts, Our Address]</a></li>
-                            </ul>';
-        return array('HtmlContent' => $defaultContent,
-            'InternalJavascript' => '$(".business-menu a").doCufon();');
+        $defaultContent =
+        '{
+            "0" : {
+                "title" : "Home",
+                "subtitle" : "Welcome!",
+                "internal_link" : "#",
+                "external_link" : ""
+            },
+            "1" : {
+                "title" : "News",
+                "subtitle" : "Fresh",
+                "internal_link" : "#",
+                "external_link" : ""
+            },
+            "2" : {
+                "title" : "Services",
+                "subtitle" : "for you",
+                "internal_link" : "#",
+                "external_link" : ""
+            },
+            "3" : {
+                "title" : "Products",
+                "subtitle" : "The best",
+                "internal_link" : "#",
+                "external_link" : ""
+            },
+            "4" : {
+                "title" : "Contacts",
+                "subtitle" : "Our Address",
+                "internal_link" : "#",
+                "external_link" : ""
+            }
+        }';
+
+        return array(
+            'HtmlContent' => $defaultContent,
+            'InternalJavascript' => '$(".business-menu a").doCufon();'
+        );
     }
 
     public function getHtmlContentForDeploy()
     {
         $content = $this->alBlock->getHtmlContent();
 
-        // Finds the menu attributes
-        preg_match_all('/<a[^>]*?href=["|\'](.*?)["|\']*?\>\[(.*)?, (.[^\]]*)?\]*/', $content, $matches);
-        if(isset($matches[3]) && !empty($matches[3]))
-        {
-            // Assigns the attributes
-            $links = $matches[1];
-            $menuValues = array_combine($matches[2], $matches[3]);
-
+        $activePage = "";
+        if(null !== $this->container->get('al_page_tree')->getAlLanguage() && null !==  $this->container->get('al_page_tree')->getAlPage()) {
             $seoRepository = $this->factoryRepository->createRepository('Seo');
             $seo = $seoRepository->fromPageAndLanguage($this->container->get('al_page_tree')->getAlLanguage()->getId(), $this->container->get('al_page_tree')->getAlPage()->getId());
-            $permalink = $seo->getPermalink();
-
-            // Builds the menu items
-            $i = 1;
-            $menuItems = array();
-            foreach($menuValues as $title => $subtitle)
-            {
-                $link = array_shift($links);
-                $class = ($link == $permalink) ? ' class="active"' : '';
-                $menuItems[] = sprintf('<li id="nav%s"%s><a href="%s">%s<span>%s</span></a></li>', $i, $class, $link, $title, $subtitle);
-                $i++;
-            }
-
-            // Returns the menu
-            return sprintf('<ul class="business-menu">%s</ul>', implode("\n", $menuItems));
+            $activePage = $seo->getPermalink();
         }
 
-        return $content;
+        $i = 1;
+        $elements = array();
+        $items = json_decode($this->alBlock->getHtmlContent());
+        foreach ($items as $item) {
+            $active = '';
+            $link = $item->external_link;
+            if ($link == "" || $item->internal_link != '#') {
+                $link = $item->internal_link;
+                if ($link == $activePage) $active = ' class="active"';
+            }
+            
+            $elements[] = sprintf('<li id="nav%s"%s><a href="%s">%s<span>%s</span></a></li>', $i, $active, $link, $item->title, $item->subtitle);
+        }
+
+        return sprintf('<ul class="business-menu">%s</ul>', implode("\n", $elements));
     }
 
     public function getHtmlContent()
