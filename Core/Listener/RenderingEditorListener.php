@@ -17,33 +17,17 @@
 
 namespace AlphaLemon\Block\BusinessMenuBundle\Core\Listener;
 
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpFoundation\Request;
-use AlphaLemon\AlphaLemonCmsBundle\Core\Event\Actions\Block\BlockEditorRenderingEvent;
-use AlphaLemon\Block\BusinessMenuBundle\Core\Block\AlBlockManagerBusinessMenu;
+use AlphaLemon\AlphaLemonCmsBundle\Core\Listener\JsonBlock\RenderingListEditorListener;
 
 /**
  * Manipulates the block's editor response when the editor has been rendered
  *
  * @author alphalemon <webmaster@alphalemon.com>
  */
-class RenderingEditorListener
+class RenderingEditorListener extends RenderingListEditorListener
 {
-    public function onBlockEditorRendering(BlockEditorRenderingEvent $event)
+    protected function configure()
     {
-        try
-        {
-            $alBlockManager = $event->getAlBlockManager();
-            if ($alBlockManager instanceof AlBlockManagerBusinessMenu) {
-                $items = json_decode($alBlockManager->get()->getHtmlContent(), true);
-                $template = sprintf('%sBundle:Block:%s_editor.html.twig', $alBlockManager->get()->getClassName(), strtolower($alBlockManager->get()->getClassName()));
-                $editor = $event->getContainer()->get('templating')->render($template, array("items" => $items, "block_id" => $alBlockManager->get()->getId()));
-                $event->setEditor($editor);
-            }
-        }
-        catch(\Exception $ex)
-        {
-            throw $ex;
-        }
+        return array('blockClass' => '\AlphaLemon\Block\BusinessMenuBundle\Core\Block\AlBlockManagerBusinessMenu');
     }
 }
