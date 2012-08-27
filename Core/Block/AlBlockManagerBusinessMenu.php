@@ -21,13 +21,14 @@ use AlphaLemon\AlphaLemonCmsBundle\Core\Content\Block\AlBlockManager;
 use AlphaLemon\AlphaLemonCmsBundle\Model\AlPageAttributePeer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use AlphaLemon\AlphaLemonCmsBundle\Core\Content\Block\JsonBlock\AlBlockManagerJsonBlock;
+use AlphaLemon\AlphaLemonCmsBundle\Core\Content\Validator\AlParametersValidatorInterface;
 
 /**
  * AlBlockManagerBusinessMenu
  *
  * @author alphalemon
  */
-class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock 
+class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock
 {
     private $container;
 
@@ -37,13 +38,11 @@ class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock
         $dispatcher = $container->get('event_dispatcher');
         $factoryRepository = $container->get('alphalemon_cms.factory_repository');
         parent::__construct($dispatcher, $factoryRepository, $validator);
-
-        $this->languageRepository = $this->factoryRepository->createRepository('Language');
     }
 
     public function getDefaultValue()
     {
-        $defaultContent =
+        $defaultValue =
         '{
             "0" : {
                 "title" : "Home",
@@ -78,19 +77,22 @@ class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock
         }';
 
         return array(
-            'HtmlContent' => $defaultContent,
+            'HtmlContent' => $defaultValue,
             'InternalJavascript' => '$(".business-menu a").doCufon();'
         );
     }
 
     public function getHtmlContentForDeploy()
     {
-        $content = $this->alBlock->getHtmlContent();
+        if (null === $this->alBlock) return;
 
         $activePage = "";
-        if(null !== $this->container->get('al_page_tree')->getAlLanguage() && null !==  $this->container->get('al_page_tree')->getAlPage()) {
+        $pageTree = $this->container->get('al_page_tree');
+        $alLanguage = $pageTree->getAlLanguage();        
+        $alPage = $pageTree->getAlPage();
+        if(null !== $alLanguage && null !== $alPage) {
             $seoRepository = $this->factoryRepository->createRepository('Seo');
-            $seo = $seoRepository->fromPageAndLanguage($this->container->get('al_page_tree')->getAlLanguage()->getId(), $this->container->get('al_page_tree')->getAlPage()->getId());
+            $seo = $seoRepository->fromPageAndLanguage($alLanguage->getId(), $alPage->getId());
             $activePage = $seo->getPermalink();
         }
 
@@ -104,15 +106,10 @@ class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock
                 $link = $item->internal_link;
                 if ($link == $activePage) $active = ' class="active"';
             }
-            
+
             $elements[] = sprintf('<li id="nav%s"%s><a href="%s">%s<span>%s</span></a></li>', $i, $active, $link, $item->title, $item->subtitle);
         }
 
         return sprintf('<ul class="business-menu">%s</ul>', implode("\n", $elements));
-    }
-
-    public function getHtmlContent()
-    {
-        return $this->getHtmlContentForDeploy() . '<script type="text/javascript">$(document).ready(function(){ $(\'.business-menu a\').doCufon(); });</script>';
     }
 }

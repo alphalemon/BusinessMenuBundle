@@ -11,6 +11,9 @@
       "email": "info@alphalemon.com"
     }
   ],
+  "require-dev": {
+      "alphalemon/alphalemon-cms-bundle": "dev-master"
+  },
   "autoload": {
     "psr-0": { "AlphaLemon\\Block\\BusinessMenuBundle": ""
     }
