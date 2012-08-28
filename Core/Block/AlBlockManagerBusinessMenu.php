@@ -82,7 +82,7 @@ class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock
         );
     }
 
-    public function getHtmlContentForDeploy()
+    public function getHtml()
     {
         if (null === $this->alBlock) return;
 

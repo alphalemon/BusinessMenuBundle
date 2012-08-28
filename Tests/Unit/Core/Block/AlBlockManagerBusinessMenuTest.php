@@ -77,7 +77,7 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
     {
         $this->initContainer();
         $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
-        $this->assertEquals('', $blockManager->getHtmlContentForDeploy());
+        $this->assertEquals('', $blockManager->getHtml());
     }
 
     public function testAnyPageIsActivatedWhenPageIsNull()
@@ -95,7 +95,7 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
         
         $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
         $blockManager->set($block);
-        $content = $blockManager->getHtmlContentForDeploy();
+        $content = $blockManager->getHtml();
         
         $expectedResult = '<ul class="business-menu"><li id="nav1"><a href="homepage">Home<span>Welcome!</span></a></li>' . "\n";
         $expectedResult .= '<li id="nav1"><a href="documentation">News<span>Fresh</span></a></li>' . "\n";
@@ -120,7 +120,7 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
         
         $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
         $blockManager->set($block);
-        $content = $blockManager->getHtmlContentForDeploy();
+        $content = $blockManager->getHtml();
         
         $expectedResult = '<ul class="business-menu"><li id="nav1"><a href="homepage">Home<span>Welcome!</span></a></li>' . "\n";
         $expectedResult .= '<li id="nav1"><a href="documentation">News<span>Fresh</span></a></li>' . "\n";
@@ -145,7 +145,7 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
         
         $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
         $blockManager->set($block);
-        $content = $blockManager->getHtmlContentForDeploy();
+        $content = $blockManager->getHtml();
         
         $expectedResult = '<ul class="business-menu"><li id="nav1" class="active"><a href="homepage">Home<span>Welcome!</span></a></li>' . "\n";
         $expectedResult .= '<li id="nav1"><a href="documentation">News<span>Fresh</span></a></li>' . "\n";
@@ -170,7 +170,7 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
         
         $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
         $blockManager->set($block);
-        $content = $blockManager->getHtmlContentForDeploy();
+        $content = $blockManager->getHtml();
         
         $expectedResult = '<ul class="business-menu"><li id="nav1"><a href="homepage">Home<span>Welcome!</span></a></li>' . "\n";
         $expectedResult .= '<li id="nav1" class="active"><a href="documentation">News<span>Fresh</span></a></li>' . "\n";
