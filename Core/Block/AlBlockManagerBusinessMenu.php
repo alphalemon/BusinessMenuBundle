@@ -88,7 +88,7 @@ class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock
 
         $activePage = "";
         $pageTree = $this->container->get('al_page_tree');
-        $alLanguage = $pageTree->getAlLanguage();        
+        $alLanguage = $pageTree->getAlLanguage();
         $alPage = $pageTree->getAlPage();
         if(null !== $alLanguage && null !== $alPage) {
             $seoRepository = $this->factoryRepository->createRepository('Seo');
@@ -98,7 +98,7 @@ class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock
 
         $i = 1;
         $elements = array();
-        $items = json_decode($this->alBlock->getHtmlContent());
+        $items = $this->decodeJsonContent($this->alBlock, false);
         foreach ($items as $item) {
             $active = '';
             $link = $item->external_link;
