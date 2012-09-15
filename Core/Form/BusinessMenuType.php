@@ -38,7 +38,7 @@ class BusinessMenuType extends JsonBlockType
     {
         parent::buildForm($builder, $options);
 
-        $factoryRepository = $this->container->get('alphalemon_cms.factory_repository');
+        $factoryRepository = $this->container->get('alpha_lemon_cms.factory_repository');
         $seoRepository = $factoryRepository->createRepository('Seo');//echo $this->container->get('request')->get('language');exit;
         $permalinks = $seoRepository->fromLanguageName('en');
         

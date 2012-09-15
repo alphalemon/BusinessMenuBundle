@@ -36,7 +36,7 @@ class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock
     {
         $this->container = $container;
         $dispatcher = $container->get('event_dispatcher');
-        $factoryRepository = $container->get('alphalemon_cms.factory_repository');
+        $factoryRepository = $container->get('alpha_lemon_cms.factory_repository');
         parent::__construct($dispatcher, $factoryRepository, $validator);
     }
 
@@ -87,7 +87,7 @@ class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock
         if (null === $this->alBlock) return;
 
         $activePage = "";
-        $pageTree = $this->container->get('al_page_tree');
+        $pageTree = $this->container->get('alpha_lemon_cms.page_tree');
         $alLanguage = $pageTree->getAlLanguage();
         $alPage = $pageTree->getAlPage();
         if(null !== $alLanguage && null !== $alPage) {
