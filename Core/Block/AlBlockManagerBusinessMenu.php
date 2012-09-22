@@ -35,9 +35,10 @@ class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock
     public function __construct(ContainerInterface $container, AlParametersValidatorInterface $validator = null)
     {
         $this->container = $container;
-        $dispatcher = $container->get('event_dispatcher');
+        $eventsHandler = $container->get('alpha_lemon_cms.events_handler');
         $factoryRepository = $container->get('alpha_lemon_cms.factory_repository');
-        parent::__construct($dispatcher, $factoryRepository, $validator);
+
+        parent::__construct($eventsHandler, $factoryRepository, $validator);
     }
 
     public function getDefaultValue()
@@ -93,7 +94,7 @@ class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock
         if(null !== $alLanguage && null !== $alPage) {
             $seoRepository = $this->factoryRepository->createRepository('Seo');
             $seo = $seoRepository->fromPageAndLanguage($alLanguage->getId(), $alPage->getId());
-            $activePage = $seo->getPermalink();
+            if (null !== $seo) $activePage = $seo->getPermalink();
         }
 
         $i = 1;
