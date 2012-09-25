@@ -62,12 +62,12 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
                 "external_link" : ""
             }
         }';
-        
+
         $expectedValue = array(
             'HtmlContent' => $value,
-            'InternalJavascript' => '$(".business-menu a").doCufon();',            
+            'InternalJavascript' => '$(".business-menu a").doCufon();',
         );
-        
+
         $this->initContainer();
         $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
         $this->assertEquals($expectedValue, $blockManager->getDefaultValue());
@@ -82,46 +82,21 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
 
     public function testAnyPageIsActivatedWhenPageIsNull()
     {
-        $block = $this->setUpBlock();   
+        $block = $this->setUpBlock();
         $this->setUpSeoRepository('homepage', null, $this->setUpPage(0));
-        
+
         $factoryRepository = $this->getMock('AlphaLemon\AlphaLemonCmsBundle\Core\Repository\Factory\AlFactoryRepositoryInterface');
         $factoryRepository->expects($this->once())
             ->method('createRepository')
-            ->will($this->returnValue($this->blockRepository));        
+            ->will($this->returnValue($this->blockRepository));
         $this->container->expects($this->exactly(3))
                         ->method('get')
-                        ->will($this->onConsecutiveCalls($this->dispatcher, $factoryRepository, $this->pageTree));
-        
+                        ->will($this->onConsecutiveCalls($this->eventsHandler, $factoryRepository, $this->pageTree));
+
         $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
         $blockManager->set($block);
         $content = $blockManager->getHtml();
-        
-        $expectedResult = '<ul class="business-menu"><li id="nav1"><a href="homepage">Home<span>Welcome!</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="documentation">News<span>Fresh</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Services<span>for you</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Products<span>The best</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Contacts<span>Our Address</span></a></li></ul>';
-        $this->assertEquals($expectedResult, $content);
-    }    
-    
-    public function testAnyPageIsActivatedWhenLanguageIsNull()
-    {
-        $block = $this->setUpBlock();   
-        $this->setUpSeoRepository('homepage', $this->setUpLanguage(0), null);
-        
-        $factoryRepository = $this->getMock('AlphaLemon\AlphaLemonCmsBundle\Core\Repository\Factory\AlFactoryRepositoryInterface');
-        $factoryRepository->expects($this->once())
-            ->method('createRepository')
-            ->will($this->returnValue($this->blockRepository));        
-        $this->container->expects($this->exactly(3))
-                        ->method('get')
-                        ->will($this->onConsecutiveCalls($this->dispatcher, $factoryRepository, $this->pageTree));
-        
-        $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
-        $blockManager->set($block);
-        $content = $blockManager->getHtml();
-        
+
         $expectedResult = '<ul class="business-menu"><li id="nav1"><a href="homepage">Home<span>Welcome!</span></a></li>' . "\n";
         $expectedResult .= '<li id="nav1"><a href="documentation">News<span>Fresh</span></a></li>' . "\n";
         $expectedResult .= '<li id="nav1"><a href="#">Services<span>for you</span></a></li>' . "\n";
@@ -129,24 +104,49 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
         $expectedResult .= '<li id="nav1"><a href="#">Contacts<span>Our Address</span></a></li></ul>';
         $this->assertEquals($expectedResult, $content);
     }
-    
+
+    public function testAnyPageIsActivatedWhenLanguageIsNull()
+    {
+        $block = $this->setUpBlock();
+        $this->setUpSeoRepository('homepage', $this->setUpLanguage(0), null);
+
+        $factoryRepository = $this->getMock('AlphaLemon\AlphaLemonCmsBundle\Core\Repository\Factory\AlFactoryRepositoryInterface');
+        $factoryRepository->expects($this->once())
+            ->method('createRepository')
+            ->will($this->returnValue($this->blockRepository));
+        $this->container->expects($this->exactly(3))
+                        ->method('get')
+                        ->will($this->onConsecutiveCalls($this->eventsHandler, $factoryRepository, $this->pageTree));
+
+        $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
+        $blockManager->set($block);
+        $content = $blockManager->getHtml();
+
+        $expectedResult = '<ul class="business-menu"><li id="nav1"><a href="homepage">Home<span>Welcome!</span></a></li>' . "\n";
+        $expectedResult .= '<li id="nav1"><a href="documentation">News<span>Fresh</span></a></li>' . "\n";
+        $expectedResult .= '<li id="nav1"><a href="#">Services<span>for you</span></a></li>' . "\n";
+        $expectedResult .= '<li id="nav1"><a href="#">Products<span>The best</span></a></li>' . "\n";
+        $expectedResult .= '<li id="nav1"><a href="#">Contacts<span>Our Address</span></a></li></ul>';
+        $this->assertEquals($expectedResult, $content);
+    }
+
     public function testHomepagePageIsActivated()
     {
-        $block = $this->setUpBlock();   
+        $block = $this->setUpBlock();
         $this->setUpSeoRepository('homepage', $this->setUpLanguage(), $this->setUpPage());
-        
+
         $factoryRepository = $this->getMock('AlphaLemon\AlphaLemonCmsBundle\Core\Repository\Factory\AlFactoryRepositoryInterface');
         $factoryRepository->expects($this->exactly(2))
             ->method('createRepository')
             ->will($this->onConsecutiveCalls($this->blockRepository, $this->seoRepository));
         $this->container->expects($this->exactly(3))
                         ->method('get')
-                        ->will($this->onConsecutiveCalls($this->dispatcher, $factoryRepository, $this->pageTree));
-        
+                        ->will($this->onConsecutiveCalls($this->eventsHandler, $factoryRepository, $this->pageTree));
+
         $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
         $blockManager->set($block);
         $content = $blockManager->getHtml();
-        
+
         $expectedResult = '<ul class="business-menu"><li id="nav1" class="active"><a href="homepage">Home<span>Welcome!</span></a></li>' . "\n";
         $expectedResult .= '<li id="nav1"><a href="documentation">News<span>Fresh</span></a></li>' . "\n";
         $expectedResult .= '<li id="nav1"><a href="#">Services<span>for you</span></a></li>' . "\n";
@@ -154,24 +154,24 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
         $expectedResult .= '<li id="nav1"><a href="#">Contacts<span>Our Address</span></a></li></ul>';
         $this->assertEquals($expectedResult, $content);
     }
-    
+
     public function testDocumentPageIsActivated()
     {
-        $block = $this->setUpBlock();   
+        $block = $this->setUpBlock();
         $this->setUpSeoRepository('documentation', $this->setUpLanguage(), $this->setUpPage());
-        
+
         $factoryRepository = $this->getMock('AlphaLemon\AlphaLemonCmsBundle\Core\Repository\Factory\AlFactoryRepositoryInterface');
         $factoryRepository->expects($this->exactly(2))
             ->method('createRepository')
             ->will($this->onConsecutiveCalls($this->blockRepository, $this->seoRepository));
         $this->container->expects($this->exactly(3))
                         ->method('get')
-                        ->will($this->onConsecutiveCalls($this->dispatcher, $factoryRepository, $this->pageTree));
-        
+                        ->will($this->onConsecutiveCalls($this->eventsHandler, $factoryRepository, $this->pageTree));
+
         $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
         $blockManager->set($block);
         $content = $blockManager->getHtml();
-        
+
         $expectedResult = '<ul class="business-menu"><li id="nav1"><a href="homepage">Home<span>Welcome!</span></a></li>' . "\n";
         $expectedResult .= '<li id="nav1" class="active"><a href="documentation">News<span>Fresh</span></a></li>' . "\n";
         $expectedResult .= '<li id="nav1"><a href="#">Services<span>for you</span></a></li>' . "\n";
@@ -223,7 +223,7 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
 
         return $block;
     }
-    
+
     private function setUpSeoRepository($permalink, $language, $page)
     {
         $this->pageTree = $this->getMockBuilder('AlphaLemon\AlphaLemonCmsBundle\Core\PageTree\AlPageTree')
@@ -232,45 +232,45 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
         $this->pageTree->expects($this->once())
                        ->method('getAlLanguage')
                        ->will($this->returnValue($language));
-        
+
         $this->pageTree->expects($this->once())
                        ->method('getAlPage')
                        ->will($this->returnValue($page));
-        
+
         $this->seo= $this->getMockBuilder('AlphaLemon\AlphaLemonCmsBundle\Model\AlSeo')
                           ->disableOriginalConstructor()
                           ->getMock();
-        
+
         $times = (null !== $language && null !== $page) ? 1 : 0;
         $this->seo->expects($this->exactly($times))
                   ->method('getPermalink')
-                  ->will($this->returnValue($permalink));   
-                           
+                  ->will($this->returnValue($permalink));
+
         $this->seoRepository = $this->getMockBuilder('AlphaLemon\AlphaLemonCmsBundle\Core\Repository\Propel\AlSeoRepositoryPropel')
                                ->disableOriginalConstructor()
                                ->getMock();
         $this->seoRepository->expects($this->exactly($times))
                        ->method('fromPageAndLanguage')
-                       ->will($this->returnValue($this->seo));        
+                       ->will($this->returnValue($this->seo));
     }
-    
+
     private function setUpLanguage($times = 1)
     {
-        $language = $this->getMock('AlphaLemon\AlphaLemonCmsBundle\Model\AlLanguage');        
+        $language = $this->getMock('AlphaLemon\AlphaLemonCmsBundle\Model\AlLanguage');
         $language->expects($this->exactly($times))
                        ->method('getId')
                        ->will($this->returnValue(2));
-        
+
         return $language;
     }
-    
+
     private function setUpPage($times = 1)
     {
-        $page= $this->getMock('AlphaLemon\AlphaLemonCmsBundle\Model\AlPage');        
+        $page= $this->getMock('AlphaLemon\AlphaLemonCmsBundle\Model\AlPage');
         $page->expects($this->exactly($times))
                    ->method('getId')
                    ->will($this->returnValue(2));
-        
+
         return $page;
     }
 }
