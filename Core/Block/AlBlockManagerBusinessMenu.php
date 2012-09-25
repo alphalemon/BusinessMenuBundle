@@ -17,30 +17,15 @@
 
 namespace AlphaLemon\Block\BusinessMenuBundle\Core\Block;
 
-use AlphaLemon\AlphaLemonCmsBundle\Core\Content\Block\AlBlockManager;
-use AlphaLemon\AlphaLemonCmsBundle\Model\AlPageAttributePeer;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use AlphaLemon\AlphaLemonCmsBundle\Core\Content\Block\JsonBlock\AlBlockManagerJsonBlock;
-use AlphaLemon\AlphaLemonCmsBundle\Core\Content\Validator\AlParametersValidatorInterface;
+use AlphaLemon\AlphaLemonCmsBundle\Core\Content\Block\JsonBlock\AlBlockManagerJsonBlockContainer;
 
 /**
  * AlBlockManagerBusinessMenu
  *
  * @author alphalemon
  */
-class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlock
+class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlockContainer
 {
-    private $container;
-
-    public function __construct(ContainerInterface $container, AlParametersValidatorInterface $validator = null)
-    {
-        $this->container = $container;
-        $eventsHandler = $container->get('alpha_lemon_cms.events_handler');
-        $factoryRepository = $container->get('alpha_lemon_cms.factory_repository');
-
-        parent::__construct($eventsHandler, $factoryRepository, $validator);
-    }
-
     public function getDefaultValue()
     {
         $defaultValue =
