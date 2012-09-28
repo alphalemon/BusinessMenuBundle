@@ -63,7 +63,7 @@ class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlockContainer
         }';
 
         return array(
-            'HtmlContent' => $defaultValue,
+            'Content' => $defaultValue,
             'InternalJavascript' => '$(".business-menu a").doCufon();'
         );
     }

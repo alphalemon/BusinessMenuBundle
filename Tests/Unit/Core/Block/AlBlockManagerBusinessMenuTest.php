@@ -64,7 +64,7 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
         }';
 
         $expectedValue = array(
-            'HtmlContent' => $value,
+            'Content' => $value,
             'InternalJavascript' => '$(".business-menu a").doCufon();',
         );
 
@@ -218,7 +218,7 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
 
         $block = $this->getMock('AlphaLemon\AlphaLemonCmsBundle\Model\AlBlock');
         $block->expects($this->once())
-            ->method('getHtmlContent')
+            ->method('getContent')
             ->will($this->returnValue($value));
 
         return $block;
