@@ -98,4 +98,9 @@ class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlockContainer
 
         return sprintf('<ul class="business-menu">%s</ul>', implode("\n", $elements));
     }
+
+    protected function getEditorWidth()
+    {
+        return 600;
+    }
 }
