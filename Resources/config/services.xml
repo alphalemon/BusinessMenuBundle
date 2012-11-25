@@ -14,18 +14,5 @@
             <parameter>@BusinessMenuBundle/Resources/public/js/Swis721_Cn_BT_400.font.js</parameter>
             <parameter>@BusinessMenuBundle/Resources/public/js/Swis721_Cn_BT_700.font.js</parameter>
         </parameter>
-
-        <parameter key="businessmenu_editor_rendering.class">AlphaLemon\Block\BusinessMenuBundle\Core\Listener\RenderingEditorListener</parameter>
-        <parameter key="businessmenu.form.class">AlphaLemon\Block\BusinessMenuBundle\Core\Form\BusinessMenuType</parameter>
     </parameters>
-
-    <services>
-        <service id="businessmenu_editor_rendering" class="%businessmenu_editor_rendering.class%">
-            <tag name="alcms.event_listener" event="actions.block_editor_rendering" method="onBlockEditorRendering" priority="0" />
-        </service>
-
-        <service id="businessmenu.form" class="%businessmenu.form.class%">
-            <argument type="service" id="service_container" />
-        </service>
-    </services>
 </container>
