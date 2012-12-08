@@ -79,24 +79,21 @@ class AlBlockManagerBusinessMenu extends AlBlockManagerJsonBlockContainer
         if(null !== $alLanguage && null !== $alPage) {
             $seoRepository = $this->factoryRepository->createRepository('Seo');
             $seo = $seoRepository->fromPageAndLanguage($alLanguage->getId(), $alPage->getId());
-            if (null !== $seo) $activePage = $seo->getPermalink();
-        }
-
-        $i = 1;
-        $elements = array();
-        $items = $this->decodeJsonContent($this->alBlock, false);
-        foreach ($items as $item) {
-            $active = '';
-            $link = $item->external_link;
-            if ($link == "" || $item->internal_link != '#') {
-                $link = $item->internal_link;
-                if ($link == $activePage) $active = ' class="active"';
+            if (null !== $seo) {
+                $activePage = $seo->getPermalink();
             }
-
-            $elements[] = sprintf('<li id="nav%s"%s><a href="%s">%s<span>%s</span></a></li>', $i, $active, $link, $item->title, $item->subtitle);
         }
-
-        return sprintf('<ul class="business-menu">%s</ul>', implode("\n", $elements));
+        
+        $items = $this->decodeJsonContent($this->alBlock);
+        return array(
+            "RenderView" => array(
+                "view" => "BusinessMenuBundle:Menu:menu.html.twig",
+                "options" => array(
+                    "items" => $items,
+                    "active_page" => $activePage,
+                )
+            )
+        );
     }
 
     protected function getEditorWidth()

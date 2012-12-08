@@ -1,0 +1,16 @@
+<ul class="business-menu">
+    {% for item in items %}
+        {% set active = '' %}
+        {% set link = item.external_link %}
+        {% if link == "" or item.internal_link != '#' %}
+            {% set link = item.internal_link %}
+            {% if link == active_page %}
+            {% set active = ' class="active"' %}
+            {% endif %}
+        {% endif %}
+        
+        <li id="nav{{loop.index }}"{{ active }}>
+            <a href="{{ link }}">{{ item.title }}<span>{{ item.subtitle }}</span></a>
+        </li>
+    {% endfor %}    
+</ul>
