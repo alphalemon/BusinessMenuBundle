@@ -96,13 +96,8 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
         $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
         $blockManager->set($block);
         $content = $blockManager->getHtml();
-
-        $expectedResult = '<ul class="business-menu"><li id="nav1"><a href="homepage">Home<span>Welcome!</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="documentation">News<span>Fresh</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Services<span>for you</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Products<span>The best</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Contacts<span>Our Address</span></a></li></ul>';
-        $this->assertEquals($expectedResult, $content);
+        
+        $this->assertEquals($this->getExpectedResult(), $content);
     }
 
     public function testAnyPageIsActivatedWhenLanguageIsNull()
@@ -122,12 +117,7 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
         $blockManager->set($block);
         $content = $blockManager->getHtml();
 
-        $expectedResult = '<ul class="business-menu"><li id="nav1"><a href="homepage">Home<span>Welcome!</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="documentation">News<span>Fresh</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Services<span>for you</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Products<span>The best</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Contacts<span>Our Address</span></a></li></ul>';
-        $this->assertEquals($expectedResult, $content);
+        $this->assertEquals($this->getExpectedResult(), $content);
     }
 
     public function testHomepagePageIsActivated()
@@ -146,12 +136,10 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
         $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
         $blockManager->set($block);
         $content = $blockManager->getHtml();
-
-        $expectedResult = '<ul class="business-menu"><li id="nav1" class="active"><a href="homepage">Home<span>Welcome!</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="documentation">News<span>Fresh</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Services<span>for you</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Products<span>The best</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Contacts<span>Our Address</span></a></li></ul>';
+        
+        $expectedResult = $this->getExpectedResult();
+        $expectedResult["RenderView"]["options"]["active_page"] = "homepage";
+        
         $this->assertEquals($expectedResult, $content);
     }
 
@@ -171,13 +159,68 @@ class AlBlockManagerBusinessMenuTest extends AlBlockManagerContainerBase
         $blockManager = new AlBlockManagerBusinessMenu($this->container, $this->validator);
         $blockManager->set($block);
         $content = $blockManager->getHtml();
-
-        $expectedResult = '<ul class="business-menu"><li id="nav1"><a href="homepage">Home<span>Welcome!</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1" class="active"><a href="documentation">News<span>Fresh</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Services<span>for you</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Products<span>The best</span></a></li>' . "\n";
-        $expectedResult .= '<li id="nav1"><a href="#">Contacts<span>Our Address</span></a></li></ul>';
+        
+        $expectedResult = $this->getExpectedResult();
+        $expectedResult["RenderView"]["options"]["active_page"] = "documentation";
+        
         $this->assertEquals($expectedResult, $content);
+    }
+    
+    private function getExpectedResult()
+    {
+        return array
+        (
+            "RenderView" => array
+                (
+                    "view" => "BusinessMenuBundle:Menu:menu.html.twig",
+                    "options" => array
+                        (
+                            "items" => array
+                                (
+                                    array
+                                        (
+                                            "title" => "Home",
+                                            "subtitle" => "Welcome!",
+                                            "internal_link" => "homepage",
+                                            "external_link" => "",
+                                        ),
+
+                                    array
+                                        (
+                                            "title" => "News",
+                                            "subtitle" => "Fresh",
+                                            "internal_link" => "documentation",
+                                            "external_link" => "",
+                                        ),
+
+                                    array
+                                        (
+                                            "title" => "Services",
+                                            "subtitle" => "for you",
+                                            "internal_link" => "#",
+                                            "external_link" => "",
+                                        ),
+
+                                    array
+                                        (
+                                            "title" => "Products",
+                                            "subtitle" => "The best",
+                                            "internal_link" => "#",
+                                            "external_link" => "",
+                                        ),
+
+                                    array
+                                        (
+                                            "title" => "Contacts",
+                                            "subtitle" => "Our Address",
+                                            "internal_link" => "#",
+                                            "external_link" => "",
+                                        ),
+                                ),
+                            "active_page" => "",
+                        ),
+                ),
+        );
     }
 
     private function setUpBlock()
